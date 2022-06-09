@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NewUserRegistered implements ShouldQueue
+class GetTemperatureForUser implements ShouldQueue
 {
     /**
      * Create the event listener.

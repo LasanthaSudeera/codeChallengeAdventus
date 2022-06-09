@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\UserRegistered;
-use App\Listeners\NewUserRegistered;
+use App\Listeners\GetTemperatureForUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         UserRegistered::class => [
-            NewUserRegistered::class
+            GetTemperatureForUser::class
         ]
     ];
 
