@@ -5,6 +5,7 @@
 - VueJS
 - SQLite
 - Animate.css
+- SweetAlert
 
 I have used Services, Actions, Events and Listeners for the core of the solution. To keep the code manageable Events listeners will be responsible for the API communication.
 
