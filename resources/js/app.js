@@ -31,9 +31,6 @@ window.Form = Form;
 
 // UI Imports
 
-// User
-Vue.component('show-user-component', require('./components/main/user/ShowUserComponent.vue').default);
-
 // Home
 Vue.component('home-component', require('./components/main/home/HomeComponent.vue').default);
 
