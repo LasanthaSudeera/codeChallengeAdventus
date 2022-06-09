@@ -6,3 +6,13 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+@import 'animate.css';
+
+.bg-cloud {
+    background-image: url("/images/bg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-color: #cccccc;
+    background-size: cover;
+  }
+

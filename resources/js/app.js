@@ -26,12 +26,16 @@ Vue.component('data-table', require('./components/modules/DataTable.vue').defaul
 
 // vForm
 import Form from 'vform';
+import Vue from 'vue';
 window.Form = Form;
 
 // UI Imports
 
 // User
 Vue.component('show-user-component', require('./components/main/user/ShowUserComponent.vue').default);
+
+// Home
+Vue.component('home-component', require('./components/main/home/HomeComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
