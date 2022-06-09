@@ -14,7 +14,8 @@ class WeatherAPIHelper
             'lat' => $lat,
             'lon' => $lon,
             'exclude' => 'minutely,hourly,daily,alerts',
-            'appid' => config('config.open_weather_map_api_key')
+            'appid' => config('config.open_weather_map_api_key'),
+            'units' => 'metric'
         ]);
 
         if ($response->status() != 200) {
