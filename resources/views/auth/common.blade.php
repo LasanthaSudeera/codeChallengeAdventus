@@ -47,7 +47,7 @@
         background-color: rgba(255, 255, 255, 0.603);
         min-height: 40em;
         margin: 0em 5em;
-        border-radius: 8%;
+        border-radius: 3%;
     }
 
     .login-wrap {
