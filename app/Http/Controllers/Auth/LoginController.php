@@ -79,7 +79,7 @@ class LoginController extends Controller
         }
     }
 
-    public function credentials(Request $request) {
+    private function credentials(Request $request) {
 
         $type =  filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         if($type == 'email') {
