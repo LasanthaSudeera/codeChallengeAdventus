@@ -36,6 +36,10 @@ Vue.filter("celsiusInFahrenheit", function (value) {
 
 // Module Imports
 
+// SweetAlert
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
 // DataTable
 Vue.component(
     "data-table",

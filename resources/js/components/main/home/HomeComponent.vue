@@ -32,7 +32,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <h2 class="city-name-text">
-                                            {{ cityOneName | nameStandard}}
+                                            {{ cityOneName | nameStandard }}
                                         </h2>
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <h2 class="city-name-text">
-                                            {{ cityTwoName | nameStandard}}
+                                            {{ cityTwoName | nameStandard }}
                                         </h2>
                                     </div>
                                 </div>
@@ -70,11 +70,34 @@ export default {
     data() {
         return {
             showTemps: false,
+
+            temperatures: null,
         };
     },
 
     mounted() {
         this.showTemps = true;
+
+        this.getTemperatures();
+    },
+
+    methods: {
+        getTemperatures() {
+            axios
+                .get("/api/user/get-user-temperatures")
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.temperatures = response.data;
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: error.response.data.message,
+                        icon: "error",
+                    });
+                });
+        },
     },
 };
 </script>
