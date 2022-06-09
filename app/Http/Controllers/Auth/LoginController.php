@@ -62,7 +62,7 @@ class LoginController extends Controller
 
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        if ($this->guard()->validate(array($fieldType => $input['email'], 'password' => $input['password']))) {
+        if ($this->guard()->validate($this->credentials($request))) {
             if (Auth::guard('web')->attempt(array($fieldType => $input['email'], 'password' => $input['password'], 'is_active' => 1))) {
                 return redirect()->route('home');
             } else {
@@ -77,5 +77,19 @@ class LoginController extends Controller
             return redirect()->route('login')->withErrors($errors)->withInput($request->except('password'));
             $this->incrementLoginAttempts($request);
         }
+    }
+
+    public function credentials(Request $request) {
+
+        $type =  filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        if($type == 'email') {
+            return $request->only($this->username(), 'password');
+        } else {
+            return [
+                'username' => $request->email,
+                'password' => $request->password
+            ];
+        }
+
     }
 }
