@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class ApiUserController extends Controller
 {
-    //
+    public function getTemperatures(Request $request)
+    {
+
+    }
 }
