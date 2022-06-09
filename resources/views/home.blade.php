@@ -16,7 +16,7 @@
 
                     {{ __('You are logged in!') }}
 
-                    <show-user-component></show-user-component>
+                    <home-component></home-component>
                 </div>
             </div>
         </div>

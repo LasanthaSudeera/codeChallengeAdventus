@@ -1,5 +1,5 @@
 <template>
-
+<i class="fa-solid fa-ban"></i>
 </template>
 
 <script>
