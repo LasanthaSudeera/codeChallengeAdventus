@@ -9,10 +9,10 @@
 
 @import "animate.css";
 
-@import '~@fortawesome/fontawesome-free/css/fontawesome';
-@import '~@fortawesome/fontawesome-free/css/regular';
-@import '~@fortawesome/fontawesome-free/css/solid';
-@import '~@fortawesome/fontawesome-free/css/brands';
+@import "~@fortawesome/fontawesome-free/css/fontawesome";
+@import "~@fortawesome/fontawesome-free/css/regular";
+@import "~@fortawesome/fontawesome-free/css/solid";
+@import "~@fortawesome/fontawesome-free/css/brands";
 
 .bg-cloud {
     background-image: url("/images/bg.jpg");
@@ -43,4 +43,8 @@
 
 .login-wrap {
     position: relative;
+}
+
+.fade-bg {
+    background-blend-mode: overlay;
 }
