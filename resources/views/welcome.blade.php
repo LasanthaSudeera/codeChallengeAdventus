@@ -38,7 +38,7 @@
                                 <h5 class="text-white m-top-20">
                                     Just simply signup if you already don't have an account.
                                     Simple weather is the easiest application to compare weather in multiple locations.
-                                    Know whats its like always.
+                                    Know what's its like always.
                                 </h5>
 
                             </div>
