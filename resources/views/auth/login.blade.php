@@ -1,9 +1,9 @@
 @extends('auth.common')
 
 @section('content')
-    <div class="row d-flex justify-content-center">
+    <div class="row vh-100 d-flex justify-content-center">
 
-        <div class="col-6">
+        <div class="col-6 my-auto">
             <div class="row login-box animate__animated animate__fadeIn">
                 <div class="login-wrap p-4 p-md-5">
                     <div class="d-flex">

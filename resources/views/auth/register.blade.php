@@ -1,9 +1,9 @@
 @extends('auth.common')
 
 @section('content')
-    <div class="row d-flex justify-content-center">
+    <div class="row vh-100 d-flex justify-content-center">
 
-        <div class="col-6">
+        <div class="col-6 my-auto">
             <div class="row login-box animate__animated animate__fadeIn">
                 <div class="login-wrap p-4 p-md-5">
                     <div class="d-flex">
@@ -46,6 +46,20 @@
                                 name="email" value="{{ old('email') }}" required autocomplete="email">
 
                             @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label for="username">{{ __('Username') }}</label>
+
+
+                            <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                                name="username" value="{{ old('username') }}" required autocomplete="username">
+
+                            @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
