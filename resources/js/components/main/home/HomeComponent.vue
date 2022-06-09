@@ -27,22 +27,41 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="row mt-5">
-                            <div class="col-6">
+                        <div v-if="temperatures" class="row mt-5">
+                            <div
+                                v-for="city in temperatures"
+                                :key="city.id"
+                                class="col-6"
+                            >
                                 <div class="row">
                                     <div class="col-12">
                                         <h2 class="city-name-text">
-                                            {{ cityOneName | nameStandard }}
+                                            {{ city.name | nameStandard }}
                                         </h2>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="row">
+                                <div class="row mt-3">
                                     <div class="col-12">
-                                        <h2 class="city-name-text">
-                                            {{ cityTwoName | nameStandard }}
-                                        </h2>
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr
+                                                    v-for="temp in city.temperatures"
+                                                    :key="temp.id"
+                                                >
+                                                    <td>
+                                                        {{ temp.created_at | myDateWithTime }}
+                                                    </td>
+                                                    <td>{{ temp.temp }} °C</td>
+                                                    <td>
+                                                        {{
+                                                            temp.temp
+                                                                | celsiusInFahrenheit
+                                                        }}
+                                                        °F
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -56,17 +75,6 @@
 
 <script>
 export default {
-    props: {
-        cityOneName: {
-            required: true,
-            type: String,
-        },
-        cityTwoName: {
-            required: true,
-            type: String,
-        },
-    },
-
     data() {
         return {
             showTemps: false,

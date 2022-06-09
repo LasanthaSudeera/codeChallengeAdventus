@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class City extends Model
 {
@@ -16,4 +17,9 @@ class City extends Model
         'long',
         'lat'
     ];
+
+    public function temperatures() : HasMany
+    {
+        return $this->hasMany(UserCityTemperature::class);
+    }
 }

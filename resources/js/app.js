@@ -31,7 +31,11 @@ Vue.filter("nameStandard", function (words) {
 });
 
 Vue.filter("celsiusInFahrenheit", function (value) {
-    return (value * 9) / 5 + 32;
+    return ((value * 9) / 5 + 32).toFixed(2);
+});
+
+Vue.filter("myDateWithTime", function (date) {
+    return moment(date).format("dd, MMM Do YYYY, HH:mm a");
 });
 
 // Module Imports
@@ -39,6 +43,10 @@ Vue.filter("celsiusInFahrenheit", function (value) {
 // SweetAlert
 import Swal from 'sweetalert2'
 window.Swal = Swal;
+
+//Moment JS
+import moment from "moment";
+window.moment = moment;
 
 // DataTable
 Vue.component(
