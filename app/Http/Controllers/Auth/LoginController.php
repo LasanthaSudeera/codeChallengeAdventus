@@ -44,6 +44,15 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+
+        $this->validateLogin($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
         $input = $request->all();
 
         $this->validate($request, [
@@ -52,12 +61,21 @@ class LoginController extends Controller
         ]);
 
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if (Auth::guard('web')->attempt(array($fieldType => $input['email'], 'password' => $input['password'], 'is_active' => 1))) {
-            return redirect()->route('home');
+
+        if ($this->guard()->validate(array($fieldType => $input['email'], 'password' => $input['password']))) {
+            if (Auth::guard('web')->attempt(array($fieldType => $input['email'], 'password' => $input['password'], 'is_active' => 1))) {
+                return redirect()->route('home');
+            } else {
+                $this->incrementLoginAttempts($request);
+
+                $errors = new MessageBag(['email' => ['This account has been banned.']]);
+                return redirect()->route('login')->withErrors($errors)->withInput($request->except('password'));
+            }
         } else {
-            $errors = new MessageBag(['email' => ['Email and/or password invalid.']]);
-            return Redirect::back()->withErrors($errors)->withInput($request->except('password'));
+            // dd('ok');
+            $errors = new MessageBag(['email' => ['Credentials do not match our database.']]);
+            return redirect()->route('login')->withErrors($errors)->withInput($request->except('password'));
+            $this->incrementLoginAttempts($request);
         }
     }
-
 }
