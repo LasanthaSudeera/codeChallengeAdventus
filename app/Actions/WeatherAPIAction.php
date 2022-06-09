@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class WeatherAPIHelper
+class WeatherAPIAction
 {
 
     public function handle(string $lat, string $lon, string $city): object
