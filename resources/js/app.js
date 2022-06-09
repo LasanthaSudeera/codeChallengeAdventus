@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue').default;
+window.Vue = require("vue").default;
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,20 +19,37 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+// Filter
+Vue.filter("nameStandard", function (words) {
+    var separateWord = words.toLowerCase().split(" ");
+    for (var i = 0; i < separateWord.length; i++) {
+        separateWord[i] =
+            separateWord[i].charAt(0).toUpperCase() +
+            separateWord[i].substring(1);
+    }
+    return separateWord.join(" ");
+});
+
 // Module Imports
 
 // DataTable
-Vue.component('data-table', require('./components/modules/DataTable.vue').default);
+Vue.component(
+    "data-table",
+    require("./components/modules/DataTable.vue").default
+);
 
 // vForm
-import Form from 'vform';
-import Vue from 'vue';
+import Form from "vform";
+import Vue from "vue";
 window.Form = Form;
 
 // UI Imports
 
 // Home
-Vue.component('home-component', require('./components/main/home/HomeComponent.vue').default);
+Vue.component(
+    "home-component",
+    require("./components/main/home/HomeComponent.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -41,5 +58,5 @@ Vue.component('home-component', require('./components/main/home/HomeComponent.vu
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
 });
