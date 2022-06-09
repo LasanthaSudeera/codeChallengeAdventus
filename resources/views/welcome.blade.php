@@ -44,6 +44,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-3  animate__animated animate__zoomInDown animate__delay-3s">
+                        <div class="col-12">
+                            <div class="mt-4 py-3">
+                                <h2 class="text-white">Also available on</h2>
+                                <div class="d-flex">
+                                    <img class="mx-1" src="{{asset('images/googleplay.png')}}" />
+                                    <img class="mx-1" src="{{asset('images/appstor.png')}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6">
                     <div class="row login-box animate__animated animate__fadeIn animate__delay-2s">
