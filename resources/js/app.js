@@ -30,6 +30,10 @@ Vue.filter("nameStandard", function (words) {
     return separateWord.join(" ");
 });
 
+Vue.filter("celsiusInFahrenheit", function (value) {
+    return (value * 9) / 5 + 32;
+});
+
 // Module Imports
 
 // DataTable
