@@ -13,7 +13,7 @@ return [
         'CITY_TWO' => [
             'long' =>  env('CITY_TWO_LONG', '06.56'),
             'lat' =>  env('CITY_TWO_LAT', '79.51'),
-            'name' =>  env('CITY_TWO_NAME', 'COLOMBO')
+            'name' =>  env('CITY_TWO_NAME', 'Colombo')
         ],
     ],
 
