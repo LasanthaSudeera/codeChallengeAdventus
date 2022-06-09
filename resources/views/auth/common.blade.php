@@ -30,27 +30,5 @@
 </html>
 
 <style>
-    .main-text {
-        font-family: "Ubuntu", sans-serif;
-        font-size: 3.75rem;
-        font-weight: 700;
-        line-height: 4.5rem;
-    }
 
-    .login-text {
-        font-family: "Ubuntu", sans-serif;
-        font-size: 2.3rem;
-        font-weight: 700;
-    }
-
-    .login-box {
-        background-color: rgba(255, 255, 255, 0.603);
-        min-height: 40em;
-        margin: 0em 5em;
-        border-radius: 3%;
-    }
-
-    .login-wrap {
-        position: relative;
-    }
 </style>
