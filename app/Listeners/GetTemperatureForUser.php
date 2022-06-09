@@ -28,7 +28,7 @@ class GetTemperatureForUser implements ShouldQueue
      * @param  object  $event
      * @return void
      */
-    public function handle(UserRegistered $event)
+    public function handle($event)
     {
         $user = $event->user;
         $service = new WeatherAPIService();

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\UserLoggedIn;
 use App\Events\UserRegistered;
 use App\Listeners\GetTemperatureForUser;
 use Illuminate\Auth\Events\Registered;
@@ -22,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         UserRegistered::class => [
+            GetTemperatureForUser::class
+        ],
+
+        UserLoggedIn::class => [
             GetTemperatureForUser::class
         ]
     ];

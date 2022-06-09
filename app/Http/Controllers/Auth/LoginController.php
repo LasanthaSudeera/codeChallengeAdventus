@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserLoggedIn;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use App\Http\Controllers\Controller;
@@ -64,6 +65,7 @@ class LoginController extends Controller
 
         if ($this->guard()->validate($this->credentials($request))) {
             if (Auth::guard('web')->attempt(array($fieldType => $input['email'], 'password' => $input['password'], 'is_active' => 1))) {
+                event(new UserLoggedIn(Auth::user()));
                 return redirect()->route('home');
             } else {
                 $this->incrementLoginAttempts($request);
@@ -79,10 +81,11 @@ class LoginController extends Controller
         }
     }
 
-    private function credentials(Request $request) {
+    private function credentials(Request $request)
+    {
 
         $type =  filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if($type == 'email') {
+        if ($type == 'email') {
             return $request->only($this->username(), 'password');
         } else {
             return [
@@ -90,6 +93,5 @@ class LoginController extends Controller
                 'password' => $request->password
             ];
         }
-
     }
 }
