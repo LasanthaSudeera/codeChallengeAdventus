@@ -16,10 +16,12 @@
                                 <button
                                     type="button"
                                     class="btn btn-outline-danger mx-1"
+                                    @click="arrangeByHottestTemp(1)"
                                 >
                                     Hottest First
                                 </button>
                                 <button
+                                    @click="arrangeByHottestTemp()"
                                     type="button"
                                     class="btn btn-outline-info mx-1"
                                 >
@@ -49,7 +51,10 @@
                                                     :key="temp.id"
                                                 >
                                                     <td>
-                                                        {{ temp.created_at | myDateWithTime }}
+                                                        {{
+                                                            temp.created_at
+                                                                | myDateWithTime
+                                                        }}
                                                     </td>
                                                     <td>{{ temp.temp }} °C</td>
                                                     <td>
@@ -80,6 +85,10 @@ export default {
             showTemps: false,
 
             temperatures: null,
+
+            searchParams: {
+                hottest: 0,
+            },
         };
     },
 
@@ -92,7 +101,9 @@ export default {
     methods: {
         getTemperatures() {
             axios
-                .get("/api/user/get-user-temperatures")
+                .get("/api/user/get-user-temperatures", {
+                    params: this.searchParams,
+                })
                 .then((response) => {
                     if (response.status == 200) {
                         this.temperatures = response.data;
@@ -105,6 +116,11 @@ export default {
                         icon: "error",
                     });
                 });
+        },
+
+        arrangeByHottestTemp(value = 0) {
+            this.searchParams.hottest = value;
+            this.getTemperatures();
         },
     },
 };
