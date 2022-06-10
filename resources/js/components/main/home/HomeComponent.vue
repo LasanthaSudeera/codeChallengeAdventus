@@ -80,6 +80,13 @@
 
 <script>
 export default {
+    props: {
+        channelName: {
+            required: true,
+            type: String,
+        },
+    },
+
     data() {
         return {
             showTemps: false,
@@ -94,8 +101,16 @@ export default {
 
     mounted() {
         this.showTemps = true;
+        // this.getTemperatures();
 
-        this.getTemperatures();
+        Echo.channel(this.channelName).listen(
+            ".hello",
+            (e) => {
+                this.getTemperatures();
+            }
+        );
+
+        // Echo.channel(this.channelName).listen("hello", (e) => console.log(e));
     },
 
     methods: {
