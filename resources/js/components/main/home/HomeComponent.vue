@@ -99,18 +99,18 @@ export default {
         };
     },
 
-    mounted() {
-        this.showTemps = true;
-        // this.getTemperatures();
-
-        Echo.channel(this.channelName).listen(
-            ".hello",
+    created() {
+        window.Echo.channel(this.channelName).listen(
+            "\\App\\Events\\UpdateTempNotification",
             (e) => {
                 this.getTemperatures();
             }
         );
+    },
 
-        // Echo.channel(this.channelName).listen("hello", (e) => console.log(e));
+    mounted() {
+        this.showTemps = true;
+        this.getTemperatures();
     },
 
     methods: {
