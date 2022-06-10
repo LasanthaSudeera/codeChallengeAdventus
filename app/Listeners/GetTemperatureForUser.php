@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\UpdateTempNotification;
 use Exception;
 use App\Events\UserRegistered;
 use App\Models\City;
@@ -34,5 +35,6 @@ class GetTemperatureForUser implements ShouldQueue
         $service = new WeatherAPIService();
         $service->saveUserWeatherReports($user->id);
 
+        broadcast(new UpdateTempNotification($user));
     }
 }
