@@ -31,14 +31,14 @@
                         </div>
                         <div v-if="temperatures" class="row mt-5">
                             <div
-                                v-for="city in temperatures"
-                                :key="city.id"
+                                v-for="(city, index) in temperatures"
+                                :key="index"
                                 class="col-6"
                             >
                                 <div class="row">
                                     <div class="col-12">
                                         <h2 class="city-name-text">
-                                            {{ city.name | nameStandard }}
+                                            {{ city.city.name | nameStandard }}
                                         </h2>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                                 tag="tbody"
                                             >
                                                 <tr
-                                                    v-for="temp in city.temperatures"
+                                                    v-for="temp in city.temperatures.data"
                                                     :key="temp.id"
                                                 >
                                                     <td>
@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import DataTable from "../../modules/DataTable.vue";
+
 export default {
     props: {
         channelName: {
@@ -90,14 +92,21 @@ export default {
         },
     },
 
+    components: {
+        DataTable,
+    },
+
     data() {
         return {
             showTemps: false,
 
             temperatures: null,
 
+            cities: null,
+
             searchParams: {
                 hottest: 0,
+                limit: 8,
             },
         };
     },
@@ -106,7 +115,7 @@ export default {
         window.Echo.channel(this.channelName).listen(
             "\\App\\Events\\UpdateTempNotification",
             (e) => {
-                this.getTemperatures();
+                this.getTemperaturesForCities();
             }
         );
 
@@ -123,32 +132,85 @@ export default {
 
     mounted() {
         this.showTemps = true;
-        this.getTemperatures();
+
+        this.getCities()
+            .then(() => {
+                this.getTemperaturesForCities();
+            })
+            .catch((error) => {
+                Swal.fire({
+                    title: "Error!",
+                    text: error,
+                    icon: "error",
+                });
+            });
     },
 
     methods: {
-        getTemperatures() {
-            axios
-                .get("/api/user/get-user-temperatures", {
-                    params: this.searchParams,
-                })
-                .then((response) => {
-                    if (response.status == 200) {
-                        this.temperatures = response.data;
-                    }
-                })
-                .catch((error) => {
+        getTemperatures(city, page = 1) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/api/user/city/${city}/temperatures`, {
+                        params: { ...this.searchParams, page },
+                    })
+                    .then((response) => {
+                        if (response.status == 200) {
+                            resolve(response.data);
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error.response.data.message);
+                    });
+            });
+        },
+
+        getCities() {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("api/cities")
+                    .then((response) => {
+                        if (response.status == 200) {
+                            this.cities = response.data;
+                            resolve();
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error.response.data.message);
+                    });
+            });
+        },
+
+        getTemperaturesForCities() {
+            if (this.cities == null || this.cities.length <= 0) {
+                return Swal.fire({
+                    title: "Error!",
+                    text: "No cities found for user!",
+                    icon: "error",
+                });
+            }
+
+            let cityTemp = [];
+            this.cities.forEach((element) => {
+                cityTemp.push(this.getTemperatures(element.id));
+            });
+
+            Promise.all(cityTemp).then(
+                (res) => {
+                    this.temperatures = res;
+                },
+                (err) => {
                     Swal.fire({
                         title: "Error!",
-                        text: error.response.data.message,
+                        text: err,
                         icon: "error",
                     });
-                });
+                }
+            );
         },
 
         arrangeByHottestTemp(value = 0) {
             this.searchParams.hottest = value;
-            this.getTemperatures();
+            this.getTemperaturesForCities();
         },
     },
 };

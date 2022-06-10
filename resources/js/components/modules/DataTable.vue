@@ -71,11 +71,14 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr v-for="(item, index) in items" :key="index">
+                <transition-group
+                    enter-active-class="animate__animated animate__bounceIn"
+                    tag="tbody"
+                >
+                    <tr v-for="(item, index) in items" :key="item.id">
                         <slot name="tbody" :item="{ item, index }"></slot>
                     </tr>
-                </tbody>
+                </transition-group>
             </table>
             <hr />
         </div>
@@ -155,8 +158,8 @@ export default {
         },
         showSearchBox: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     watch: {
         queryLimit(newValue) {
