@@ -3,9 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\UpdateTempNotification;
-use Exception;
-use App\Events\UserRegistered;
-use App\Models\City;
 use App\Services\WeatherAPIService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,7 +28,9 @@ class GetTemperatureForUser implements ShouldQueue
      */
     public function handle($event)
     {
+
         $user = $event->user;
+
         $service = new WeatherAPIService();
         $service->saveUserWeatherReports($user->id);
 
