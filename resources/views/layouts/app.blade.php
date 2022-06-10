@@ -25,7 +25,7 @@
     <div id="app">
         <div class="vh-100 bg-cloud fade-bg">
 
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm animate__animated animate__slideInDown">
+            <nav style="z-index: 1000;" class="navbar navbar-expand-md navbar-light bg-white shadow-sm animate__animated animate__slideInDown">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
@@ -59,7 +59,7 @@
                                     </li>
                                 @endif
                             @else
-                                <li class="nav-item dropdown">
+                                <li style="z-index: 1000;" class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }}
