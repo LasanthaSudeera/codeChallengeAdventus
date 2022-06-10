@@ -45,34 +45,30 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <table class="table table-striped">
-                                                <transition-group
-
-                                                    enter-active-class="animate__animated animate__bounceIn"
-                                                    tag="tbody"
-
+                                            <transition-group
+                                                enter-active-class="animate__animated animate__bounceIn"
+                                                tag="tbody"
+                                            >
+                                                <tr
+                                                    v-for="temp in city.temperatures"
+                                                    :key="temp.id"
                                                 >
-                                                    <tr
-                                                        v-for="temp in city.temperatures"
-                                                        :key="temp.id"
-                                                    >
-                                                        <td>
-                                                            {{
-                                                                temp.created_at
-                                                                    | myDateWithTime
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{ temp.temp }} °C
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                temp.temp
-                                                                    | celsiusInFahrenheit
-                                                            }}
-                                                            °F
-                                                        </td>
-                                                    </tr>
-                                                </transition-group>
+                                                    <td>
+                                                        {{
+                                                            temp.created_at
+                                                                | myDateWithTime
+                                                        }}
+                                                    </td>
+                                                    <td>{{ temp.temp }} °C</td>
+                                                    <td>
+                                                        {{
+                                                            temp.temp
+                                                                | celsiusInFahrenheit
+                                                        }}
+                                                        °F
+                                                    </td>
+                                                </tr>
+                                            </transition-group>
                                         </table>
                                     </div>
                                 </div>
@@ -161,5 +157,4 @@ export default {
     font-size: 1.9rem;
     font-weight: 500;
 }
-
 </style>
