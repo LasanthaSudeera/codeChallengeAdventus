@@ -45,7 +45,10 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         <table class="table table-striped">
-                                            <tbody>
+                                            <transition-group
+                                                enter-active-class="animate__animated animate__bounceIn"
+                                                tag="tbody"
+                                            >
                                                 <tr
                                                     v-for="temp in city.temperatures"
                                                     :key="temp.id"
@@ -65,7 +68,7 @@
                                                         °F
                                                     </td>
                                                 </tr>
-                                            </tbody>
+                                            </transition-group>
                                         </table>
                                     </div>
                                 </div>
