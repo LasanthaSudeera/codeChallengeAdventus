@@ -25,7 +25,7 @@
     <div id="app">
         <div class="vh-100 bg-cloud fade-bg">
 
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm animate__animated animate__slideInDown">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
