@@ -50,7 +50,8 @@
                                                 tag="tbody"
                                             >
                                                 <tr
-                                                    v-for="temp in city.temperatures.data"
+                                                    v-for="temp in city
+                                                        .temperatures.data"
                                                     :key="temp.id"
                                                 >
                                                     <td>
@@ -70,6 +71,19 @@
                                                 </tr>
                                             </transition-group>
                                         </table>
+
+                                        <pagination
+                                            :data="city.temperatures"
+                                            @pagination-change-page="
+                                                (page) => {
+                                                    paginationChanged(
+                                                        page,
+                                                        city.city.id,
+                                                        index
+                                                    );
+                                                }
+                                            "
+                                        ></pagination>
                                     </div>
                                 </div>
                             </div>
@@ -206,6 +220,26 @@ export default {
                     });
                 }
             );
+        },
+
+        paginationChanged(page, city, arrayIndex) {
+            console.log({
+                page,
+                city,
+                arrayIndex,
+            });
+
+            this.getTemperatures(city, page)
+                .then((response) => {
+                    this.$set(this.temperatures, arrayIndex, response);
+                })
+                .catch((error) => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: error,
+                        icon: "error",
+                    });
+                });
         },
 
         arrangeByHottestTemp(value = 0) {
