@@ -28,4 +28,10 @@ class ApiUserController extends Controller
 
         return response()->json($temps, 200);
     }
+
+    public function deleteUserCityTemperature(City $city, $id, UserService $service)
+    {
+        $temp = $service->deleteUserCityTemperature($city, $id, auth('sanctum')->user());
+        return response()->json($temp, $temp->status);
+    }
 }

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class UserService
 {
 
-    public function getUserCityTemperature(City $city, Request $request, Authenticatable $user) : object
+    public function getUserCityTemperature(City $city, Request $request, Authenticatable $user): object
     {
         $temps =  UserCityTemperature::query();
 
@@ -35,7 +35,45 @@ class UserService
         ]);
     }
 
-    private function toObject(array $array)
+    public function deleteUserCityTemperature(City $city, $tempId, Authenticatable $user): object
+    {
+        $temp = UserCityTemperature::find($tempId);
+
+        if (is_null($temp)) return $this->toObject([
+            'status' => 404,
+            'message' => 'No matching record found!'
+        ]);
+
+        if ($temp->user_id != $user->id) {
+            return $this->toObject([
+                'status' => 404,
+                'message' => 'No matching record found!'
+            ]);
+        }
+
+        if ($temp->city_id != $city->id) {
+            return $this->toObject([
+                'status' => 404,
+                'message' => 'No matching record found!'
+            ]);
+        }
+
+        $temp->delete();
+
+        if ($temp) {
+            return $this->toObject([
+                'status' => 204,
+            ]);
+        }
+
+        return $this->toObject([
+            'status' => 500,
+            'message' => 'Failed to delete the record, please try again!'
+
+        ]);
+    }
+
+    private function toObject(array $array): object
     {
         return (object) $array;
     }

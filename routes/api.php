@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::controller(ApiUserController::class)->group(function () {
             Route::get('me', 'getUser')->name('me');
             Route::get('/city/{city}/temperatures', 'getUserCityTemperatures')->name('getUserCityTemperatures');
+            Route::delete('/city/{city}/temperature/{temp}', 'deleteUserCityTemperature')->name('deleteUserCityTemperature');
         });
     });
 

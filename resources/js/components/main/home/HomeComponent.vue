@@ -29,7 +29,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div v-if="temperatures" class="row mt-5">
+                        <div v-if="temperatures" class="row mt-4">
                             <div
                                 v-for="(city, index) in temperatures"
                                 :key="index"
@@ -76,13 +76,34 @@
                                                                 }}
                                                                 °F
                                                             </td>
+                                                            <td
+                                                                class="text-center"
+                                                            >
+                                                                <i
+                                                                    style="
+                                                                        cursor: pointer;
+                                                                    "
+                                                                    @click="
+                                                                        deleteTemp(
+                                                                            temp,
+                                                                            index,
+                                                                            city
+                                                                                .city
+                                                                                .id
+                                                                        )
+                                                                    "
+                                                                    class="fa-solid fa-trash text-danger"
+                                                                ></i>
+                                                            </td>
                                                         </tr>
                                                     </transition-group>
                                                 </table>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
-                                            <div class="col-12 d-flex justify-content-center">
+                                            <div
+                                                class="col-12 d-flex justify-content-center"
+                                            >
                                                 <pagination
                                                     :data="city.temperatures"
                                                     @pagination-change-page="
@@ -236,12 +257,6 @@ export default {
         },
 
         paginationChanged(page, city, arrayIndex) {
-            console.log({
-                page,
-                city,
-                arrayIndex,
-            });
-
             this.getTemperatures(city, page)
                 .then((response) => {
                     this.$set(this.temperatures, arrayIndex, response);
@@ -258,6 +273,41 @@ export default {
         arrangeByHottestTemp(value = 0) {
             this.searchParams.hottest = value;
             this.getTemperaturesForCities();
+        },
+
+        deleteTemp(temp, arrayIndex, city) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(`api/user/city/${city}/temperature/${temp.id}`)
+                        .then((response) => {
+                            if (response.status == 204) {
+                                Swal.fire(
+                                    "Deleted!",
+                                    "Your temperature has been deleted.",
+                                    "success"
+                                );
+
+                                this.paginationChanged(1, city, arrayIndex);
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: error.response.data.message,
+                                icon: "error",
+                            });
+                        });
+                }
+            });
         },
     },
 };
