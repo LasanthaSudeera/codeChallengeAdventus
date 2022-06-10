@@ -16,14 +16,12 @@ class ApiUserController extends Controller
 
         $temps = City::query();
 
-        $temps->whereHas('temperatures', fn ($q) => $q->where('user_id', $user->id))->with(['temperatures' => function ($q) use ($request) {
+        $orderBy = 'created_at';
+        if ($request->get('hottest')) {
+            $orderBy = 'temp';
+        }
 
-            if($request->get('hottest')) {
-                $q->orderBy('temp', 'desc');
-            } else {
-                $q->orderBy('created_at', 'desc');
-            }
-        }]);
+        $temps->with(['temperatures' => fn ($q) => $q->where('user_id', $user->id)->orderBy($orderBy, 'desc')]);
 
         if ($limit = $request->get('limit')) {
             return response()->json($temps->paginate($limit), 200);

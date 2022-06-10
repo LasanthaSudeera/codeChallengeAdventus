@@ -28,7 +28,9 @@
     "dependencies": {
         "animate.css": "^4.1.1",
         "autoprefixer": "10.4.5",
+        "laravel-echo": "^1.11.7",
         "moment": "^2.29.3",
+        "pusher-js": "^7.1.1-beta",
         "sweetalert2": "^11.4.17",
         "vform": "^2.1.2"
     }
