@@ -7,7 +7,7 @@
 - Animate.css
 - SweetAlert
 
-I have used Services, Actions, Events and Listeners for the core of the solution. To keep the code manageable Events listeners will be responsible for the API communication.
+I have used Services, Actions, Events and Listeners for the core of the solution to make the solution more responsive and minimize delays due to API callings. Used Animate.css to make the UI more interactive. SweetAlert to display alerts and feedbacks to the user. VueJs as its very easy to prototype working UIs. Used bootstrap for common stylings.
 
 
 
@@ -32,3 +32,5 @@ Next run the following command to initial basic settings
 The application uses Queue to manage API calls and mails. 
 - php artisan queue:work
 
+Final step is to run the local server
+- php artisan serve
