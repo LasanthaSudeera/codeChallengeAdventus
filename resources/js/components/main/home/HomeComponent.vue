@@ -109,6 +109,16 @@ export default {
                 this.getTemperatures();
             }
         );
+
+        window.Echo.channel(this.channelName).listen(
+            "\\App\\Events\\PriorUpdateTempNotification",
+            (e) => {
+                Toast.fire({
+                    title: "Please wait, update incoming!",
+                    icon: "info",
+                });
+            }
+        );
     },
 
     mounted() {

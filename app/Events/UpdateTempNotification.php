@@ -27,13 +27,6 @@ class UpdateTempNotification implements ShouldBroadcast
         $this->user = $user;
     }
 
-    public function broadcastWith()
-    {
-        return [
-            'hello' => 'World'
-        ];
-    }
-
     /**
      * Get the channels the event should broadcast on.
      *
