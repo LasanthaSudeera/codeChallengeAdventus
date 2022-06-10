@@ -80,6 +80,13 @@
 
 <script>
 export default {
+    props: {
+        channelName: {
+            required: true,
+            type: String,
+        },
+    },
+
     data() {
         return {
             showTemps: false,
@@ -92,9 +99,17 @@ export default {
         };
     },
 
+    created() {
+        window.Echo.channel(this.channelName).listen(
+            "\\App\\Events\\UpdateTempNotification",
+            (e) => {
+                this.getTemperatures();
+            }
+        );
+    },
+
     mounted() {
         this.showTemps = true;
-
         this.getTemperatures();
     },
 

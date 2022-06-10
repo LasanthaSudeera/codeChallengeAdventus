@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-        <home-component></home-component>
+        <home-component channel-name="{{Auth::user()->username}}" ></home-component>
     </div>
 @endsection
