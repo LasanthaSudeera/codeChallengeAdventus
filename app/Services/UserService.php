@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class UserService
 {
 
-    public function getUserCityTemperature(City $city, Request $request, Authenticatable $user)
+    public function getUserCityTemperature(City $city, Request $request, Authenticatable $user) : object
     {
         $temps =  UserCityTemperature::query();
 
