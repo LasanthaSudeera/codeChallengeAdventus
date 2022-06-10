@@ -44,46 +44,59 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-12">
-                                        <table class="table table-striped">
-                                            <transition-group
-                                                enter-active-class="animate__animated animate__bounceIn"
-                                                tag="tbody"
-                                            >
-                                                <tr
-                                                    v-for="temp in city
-                                                        .temperatures.data"
-                                                    :key="temp.id"
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <table
+                                                    class="table table-striped"
                                                 >
-                                                    <td>
-                                                        {{
-                                                            temp.created_at
-                                                                | myDateWithTime
-                                                        }}
-                                                    </td>
-                                                    <td>{{ temp.temp }} °C</td>
-                                                    <td>
-                                                        {{
-                                                            temp.temp
-                                                                | celsiusInFahrenheit
-                                                        }}
-                                                        °F
-                                                    </td>
-                                                </tr>
-                                            </transition-group>
-                                        </table>
-
-                                        <pagination
-                                            :data="city.temperatures"
-                                            @pagination-change-page="
-                                                (page) => {
-                                                    paginationChanged(
-                                                        page,
-                                                        city.city.id,
-                                                        index
-                                                    );
-                                                }
-                                            "
-                                        ></pagination>
+                                                    <transition-group
+                                                        enter-active-class="animate__animated animate__bounceIn"
+                                                        tag="tbody"
+                                                    >
+                                                        <tr
+                                                            v-for="temp in city
+                                                                .temperatures
+                                                                .data"
+                                                            :key="temp.id"
+                                                        >
+                                                            <td>
+                                                                {{
+                                                                    temp.created_at
+                                                                        | myDateWithTime
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{ temp.temp }}
+                                                                °C
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                    temp.temp
+                                                                        | celsiusInFahrenheit
+                                                                }}
+                                                                °F
+                                                            </td>
+                                                        </tr>
+                                                    </transition-group>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <pagination
+                                                    :data="city.temperatures"
+                                                    @pagination-change-page="
+                                                        (page) => {
+                                                            paginationChanged(
+                                                                page,
+                                                                city.city.id,
+                                                                index
+                                                            );
+                                                        }
+                                                    "
+                                                ></pagination>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
