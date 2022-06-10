@@ -6,26 +6,32 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\User;
 use App\Models\UserCityTemperature;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiUserController extends Controller
 {
-    public function getTemperatures(Request $request)
+
+    public function getUser()
     {
-        $user = auth('sanctum')->user();
+        return auth('sanctum')->user();
+    }
 
-        $temps = City::query();
+    public function getUserCityTemperatures(City $city, Request $request, UserService $service)
+    {
+        $temps = $service->getUserCityTemperature(
+            $city,
+            $request,
+            auth('sanctum')->user()
+        );
 
-        $orderBy = 'created_at';
-        if ($request->get('hottest')) {
-            $orderBy = 'temp';
-        }
+        return response()->json($temps, 200);
+    }
 
-        $temps->with(['temperatures' => fn ($q) => $q->where('user_id', $user->id)->orderBy($orderBy, 'desc')]);
-
-        if ($limit = $request->get('limit')) {
-            return response()->json($temps->paginate($limit), 200);
-        }
-        return response()->json($temps->get(), 200);
+    public function deleteUserCityTemperature(City $city, $id, UserService $service)
+    {
+        $temp = $service->deleteUserCityTemperature($city, $id, auth('sanctum')->user());
+        return response()->json($temp, $temp->status);
     }
 }

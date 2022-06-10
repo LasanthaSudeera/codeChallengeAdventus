@@ -73,8 +73,9 @@ import Form from "vform";
 import Vue from "vue";
 window.Form = Form;
 
-// laravel-vue-pagination
+// Laravel Vue Pagination
 Vue.component('pagination', require('laravel-vue-pagination'));
+
 
 // UI Imports
 

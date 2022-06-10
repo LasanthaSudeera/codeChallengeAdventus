@@ -29,47 +29,95 @@
                                 </button>
                             </div>
                         </div>
-                        <div v-if="temperatures" class="row mt-5">
+                        <div v-if="temperatures" class="row mt-4">
                             <div
-                                v-for="city in temperatures"
-                                :key="city.id"
+                                v-for="(city, index) in temperatures"
+                                :key="index"
                                 class="col-6"
                             >
                                 <div class="row">
                                     <div class="col-12">
                                         <h2 class="city-name-text">
-                                            {{ city.name | nameStandard }}
+                                            {{ city.city.name | nameStandard }}
                                         </h2>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-12">
-                                        <table class="table table-striped">
-                                            <transition-group
-                                                enter-active-class="animate__animated animate__bounceIn"
-                                                tag="tbody"
-                                            >
-                                                <tr
-                                                    v-for="temp in city.temperatures"
-                                                    :key="temp.id"
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <table
+                                                    class="table table-striped"
                                                 >
-                                                    <td>
-                                                        {{
-                                                            temp.created_at
-                                                                | myDateWithTime
-                                                        }}
-                                                    </td>
-                                                    <td>{{ temp.temp }} °C</td>
-                                                    <td>
-                                                        {{
-                                                            temp.temp
-                                                                | celsiusInFahrenheit
-                                                        }}
-                                                        °F
-                                                    </td>
-                                                </tr>
-                                            </transition-group>
-                                        </table>
+                                                    <transition-group
+                                                        enter-active-class="animate__animated animate__bounceIn"
+                                                        tag="tbody"
+                                                    >
+                                                        <tr
+                                                            v-for="temp in city
+                                                                .temperatures
+                                                                .data"
+                                                            :key="temp.id"
+                                                        >
+                                                            <td>
+                                                                {{
+                                                                    temp.created_at
+                                                                        | myDateWithTime
+                                                                }}
+                                                            </td>
+                                                            <td>
+                                                                {{ temp.temp }}
+                                                                °C
+                                                            </td>
+                                                            <td>
+                                                                {{
+                                                                    temp.temp
+                                                                        | celsiusInFahrenheit
+                                                                }}
+                                                                °F
+                                                            </td>
+                                                            <td
+                                                                class="text-center"
+                                                            >
+                                                                <i
+                                                                    style="
+                                                                        cursor: pointer;
+                                                                    "
+                                                                    @click="
+                                                                        deleteTemp(
+                                                                            temp,
+                                                                            index,
+                                                                            city
+                                                                                .city
+                                                                                .id
+                                                                        )
+                                                                    "
+                                                                    class="fa-solid fa-trash text-danger"
+                                                                ></i>
+                                                            </td>
+                                                        </tr>
+                                                    </transition-group>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div
+                                                class="col-12 d-flex justify-content-center"
+                                            >
+                                                <pagination
+                                                    :data="city.temperatures"
+                                                    @pagination-change-page="
+                                                        (page) => {
+                                                            paginationChanged(
+                                                                page,
+                                                                city.city.id,
+                                                                index
+                                                            );
+                                                        }
+                                                    "
+                                                ></pagination>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -82,6 +130,8 @@
 </template>
 
 <script>
+import DataTable from "../../modules/DataTable.vue";
+
 export default {
     props: {
         channelName: {
@@ -90,14 +140,21 @@ export default {
         },
     },
 
+    components: {
+        DataTable,
+    },
+
     data() {
         return {
             showTemps: false,
 
             temperatures: null,
 
+            cities: null,
+
             searchParams: {
                 hottest: 0,
+                limit: 8,
             },
         };
     },
@@ -106,7 +163,7 @@ export default {
         window.Echo.channel(this.channelName).listen(
             "\\App\\Events\\UpdateTempNotification",
             (e) => {
-                this.getTemperatures();
+                this.getTemperaturesForCities();
             }
         );
 
@@ -123,24 +180,91 @@ export default {
 
     mounted() {
         this.showTemps = true;
-        this.getTemperatures();
+
+        this.getCities()
+            .then(() => {
+                this.getTemperaturesForCities();
+            })
+            .catch((error) => {
+                Swal.fire({
+                    title: "Error!",
+                    text: error,
+                    icon: "error",
+                });
+            });
     },
 
     methods: {
-        getTemperatures() {
-            axios
-                .get("/api/user/get-user-temperatures", {
-                    params: this.searchParams,
-                })
+        getTemperatures(city, page = 1) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/api/user/city/${city}/temperatures`, {
+                        params: { ...this.searchParams, page },
+                    })
+                    .then((response) => {
+                        if (response.status == 200) {
+                            resolve(response.data);
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error.response.data.message);
+                    });
+            });
+        },
+
+        getCities() {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("api/cities")
+                    .then((response) => {
+                        if (response.status == 200) {
+                            this.cities = response.data;
+                            resolve();
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error.response.data.message);
+                    });
+            });
+        },
+
+        getTemperaturesForCities() {
+            if (this.cities == null || this.cities.length <= 0) {
+                return Swal.fire({
+                    title: "Error!",
+                    text: "No cities found for user!",
+                    icon: "error",
+                });
+            }
+
+            let cityTemp = [];
+            this.cities.forEach((element) => {
+                cityTemp.push(this.getTemperatures(element.id));
+            });
+
+            Promise.all(cityTemp).then(
+                (res) => {
+                    this.temperatures = res;
+                },
+                (err) => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: err,
+                        icon: "error",
+                    });
+                }
+            );
+        },
+
+        paginationChanged(page, city, arrayIndex) {
+            this.getTemperatures(city, page)
                 .then((response) => {
-                    if (response.status == 200) {
-                        this.temperatures = response.data;
-                    }
+                    this.$set(this.temperatures, arrayIndex, response);
                 })
                 .catch((error) => {
                     Swal.fire({
                         title: "Error!",
-                        text: error.response.data.message,
+                        text: error,
                         icon: "error",
                     });
                 });
@@ -148,7 +272,42 @@ export default {
 
         arrangeByHottestTemp(value = 0) {
             this.searchParams.hottest = value;
-            this.getTemperatures();
+            this.getTemperaturesForCities();
+        },
+
+        deleteTemp(temp, arrayIndex, city) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios
+                        .delete(`api/user/city/${city}/temperature/${temp.id}`)
+                        .then((response) => {
+                            if (response.status == 204) {
+                                Swal.fire(
+                                    "Deleted!",
+                                    "Your temperature has been deleted.",
+                                    "success"
+                                );
+
+                                this.paginationChanged(1, city, arrayIndex);
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: error.response.data.message,
+                                icon: "error",
+                            });
+                        });
+                }
+            });
         },
     },
 };
